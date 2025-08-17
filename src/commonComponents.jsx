@@ -9,7 +9,7 @@ export const AnimatedButton = ({ children, onClick, className, ...props }) => (
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     onClick={onClick}
-    className={`px-6 py-3 rounded-md font-semibold text-lg transition-colors duration-300 ${className}`}
+    className={`px-3 py-1 rounded-md font-semibold text-lg transition-colors duration-300 ${className}`}
     {...props}
   >
     {children}
