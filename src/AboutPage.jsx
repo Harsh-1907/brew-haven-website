@@ -56,28 +56,28 @@ const AboutPage = ({ onPageChange }) => {
           </div>
         </div>
       </AnimatedSection>
-      <AnimatedSection className="bg-white py-16 px-4">
+      <AnimatedSection className="bg-[#222] py-16 px-4">
         <div className="container mx-auto text-center">
-          <h3 className="text-4xl font-extrabold text-gray-900 mb-2">Our Values</h3>
-          <p className="text-lg text-gray-600 mb-12">The principles that guide everything we do at Brew Haven</p>
+          <h3 className="text-4xl font-extrabold text-white mb-2">Our Values</h3>
+          <p className="text-lg text-gray-200 mb-12">The principles that guide everything we do at Brew Haven</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-gray-50 p-8 rounded-3xl shadow-md flex flex-col items-center text-center">
-              <Leaf className="w-12 h-12 text-orange-600 mb-4" />
+              <Leaf className="w-12 h-12 text-black mb-4" />
               <h4 className="text-xl font-bold text-gray-900 mb-2">Sustainability</h4>
               <p className="text-gray-600 text-sm">We prioritize environmental responsibility and ethical sourcing in every aspect of our business.</p>
             </div>
             <div className="bg-gray-50 p-8 rounded-3xl shadow-md flex flex-col items-center text-center">
-              <Users className="w-12 h-12 text-orange-600 mb-4" />
+              <Users className="w-12 h-12 text-black mb-4" />
               <h4 className="text-xl font-bold text-gray-900 mb-2">Community</h4>
               <p className="text-gray-600 text-sm">Building connections through coffee, supporting local initiatives and creating gathering spaces.</p>
             </div>
             <div className="bg-gray-50 p-8 rounded-3xl shadow-md flex flex-col items-center text-center">
-              <Star className="w-12 h-12 text-orange-600 mb-4" />
+              <Star className="w-12 h-12 text-black mb-4" />
               <h4 className="text-xl font-bold text-gray-900 mb-2">Excellence</h4>
               <p className="text-gray-600 text-sm">Committed to the highest quality in everything we do, from bean selection to customer service.</p>
             </div>
             <div className="bg-gray-50 p-8 rounded-3xl shadow-md flex flex-col items-center text-center">
-              <Lightbulb className="w-12 h-12 text-orange-600 mb-4" />
+              <Lightbulb className="w-12 h-12 text-black mb-4" />
               <h4 className="text-xl font-bold text-gray-900 mb-2">Innovation</h4>
               <p className="text-gray-600 text-sm">Continuously exploring new techniques and technologies to enhance the coffee experience.</p>
             </div>
@@ -106,36 +106,36 @@ const AboutPage = ({ onPageChange }) => {
           </div>
         </div>
       </AnimatedSection>
-      <AnimatedSection className="bg-orange-600 text-white py-16 px-4 text-center">
+      <AnimatedSection className="bg-white text-black py-16 px-4 text-center">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-2">Our Impact</h3>
-            <p className="text-white">Beyond great coffee, we're committed to making a positive difference in our community and the world.</p>
+            <p className="text-black">Beyond great coffee, we're committed to making a positive difference in our community and the world.</p>
           </div>
           <div className="text-center">
             <h3 className="text-5xl font-extrabold mb-2">50+</h3>
-            <p className="text-white">Partner Farms Worldwide</p>
+            <p className="text-black">Partner Farms Worldwide</p>
           </div>
           <div className="text-center">
             <h3 className="text-5xl font-extrabold mb-2">$50K+</h3>
-            <p className="text-white">Donated to Community Projects</p>
+            <p className="text-black">Donated to Community Projects</p>
           </div>
         </div>
       </AnimatedSection>
-      <AnimatedSection className="bg-[#783510] text-white py-16 px-4 text-center mt-12">
+      <section className="bg-[#222] text-white py-16 px-4 text-center mt-12">
           <div className="container mx-auto">
               <h2 className="text-4xl font-extrabold mb-2">Join Our Coffee Journey</h2>
               <p className="text-lg text-white mb-8">Experience the difference that passion, quality, and community can make</p>
               <div className="flex justify-center space-x-4">
-                  <AnimatedButton onClick={() => onPageChange('menu')} className="bg-white text-amber-800 hover:bg-gray-200">
+                  <AnimatedButton onClick={() => onPageChange('menu')} className="border-2 border-white bg-[#222] text-white hover:bg-white hover:text-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
                       Visit Our Shop
                   </AnimatedButton>
-                  <AnimatedButton onClick={() => onPageChange('contact')} className="bg-orange-600 text-white hover:bg-orange-700">
+                  <AnimatedButton onClick={() => onPageChange('contact')} className="border-2 border-white bg-white text-black hover:bg-[#222] hover:text-white rounded-md px-6 py-3 font-semibold transition-colors duration-300">
                       Contact Us
                   </AnimatedButton>
               </div>
           </div>
-      </AnimatedSection>
+    </section>
     </main>
   );
 };

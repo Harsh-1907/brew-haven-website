@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, X, Plus, Minus, Search, Coffee, Home, Newspaper, User, Phone, MapPin, Award, Leaf, Heart, Clock, Check, Star, Lightbulb, Users } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import './index.css';
-//import logo from './assets/brew-haven-logo.png';
-import { AnimatedButton, AnimatedSection, SuccessModal, FeaturedCoffeeCard, CoffeeCard, BlogCard } from './commonComponents.jsx';
 
-// Import all local menu images with the .png extension
+// Importing necessary components and assets from your project structure
+import { AnimatedButton, AnimatedSection, SuccessModal, FeaturedCoffeeCard, CoffeeCard, BlogCard } from './commonComponents.jsx';
 import ethiopianYirgacheffe from './assets/menu-images/ethiopian-yirgacheffe.png';
 import classicAmericano from './assets/menu-images/classic-americano.png';
 import doubleEspresso from './assets/menu-images/double-espresso.png';
@@ -21,14 +20,138 @@ import chocolateCroissant from './assets/menu-images/chocolate-croissant.png';
 import cinnamonRoll from './assets/menu-images/cinnamon-roll.png';
 import blueberryMuffin from './assets/menu-images/blueberry-muffin.png';
 import colombianHuila from './assets/menu-images/colombian-huila.png';
-
-// Import all local blog post images
 import pourOverImage from './assets/blog-images/pour-over-coffee.png';
 import coldBrewImage from './assets/blog-images/cold-brew.png';
 import ethiopianCoffeeImage from './assets/blog-images/ethiopian-coffee.png';
 import latteArtImage from './assets/blog-images/latte-art.png';
 import sustainableCoffeeImage from './assets/blog-images/sustainable-coffee.png';
 import homeEspressoImage from './assets/blog-images/home-espresso.png';
+
+// The preloader component is now defined inside this file for simplicity and to avoid import errors.
+const Preloader = ({ onAnimationComplete }) => {
+  const [showPreloader, setShowPreloader] = useState(true);
+
+  useEffect(() => {
+    // The total duration of the animation has been increased to 3.3 seconds.
+    const timer = setTimeout(() => {
+      setShowPreloader(false);
+      if (onAnimationComplete) {
+        onAnimationComplete();
+      }
+    }, 3300); // Increased from 2.8s to 3.3s
+
+    return () => clearTimeout(timer);
+  }, [onAnimationComplete]);
+
+  const cupVariants = {
+    hidden: { opacity: 0, y: 100 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        delay: 0.7, // Increased delay by 0.5s
+      },
+    },
+  };
+
+  const liquidVariants = {
+    hidden: { height: '0%', opacity: 0 },
+    visible: {
+      height: ['0%', '80%'], // Fills to 80% height
+      opacity: 1,
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut",
+        delay: 1.0, // Increased delay by 0.5s
+      },
+    },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        delay: 2.3, // Increased delay by 0.5s
+      },
+    },
+  };
+
+  const subTextVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        delay: 2.7, // Increased delay by 0.5s
+      },
+    },
+  };
+
+  return (
+    <AnimatePresence>
+      {showPreloader && (
+        <motion.div
+          key="preloader"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.5, delay: 0.3 } }}
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto bg-[#222] overflow-hidden"
+        >
+          <motion.div
+            className="relative z-10 flex flex-col items-center text-center"
+          >
+            {/* The animated coffee cup */}
+            <motion.div
+              className="relative w-32 h-32 mb-6"
+              variants={cupVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {/* The liquid container that animates its height */}
+              <motion.div
+                className="absolute bottom-0 left-0 w-full bg-[#E5D7B7] rounded-b-lg origin-bottom"
+                variants={liquidVariants}
+              />
+              {/* This is the cup container for the border and handle */}
+              <div className="absolute inset-0 w-full h-full border-4 border-white rounded-lg" />
+              <div className="absolute top-0 w-full h-8 bg-white/20 rounded-t-lg border-b-4 border-white" />
+              {/* The handle */}
+              <div className="absolute right-[-1.5rem] top-1/4 w-12 h-16 border-4 border-white rounded-r-full" />
+            </motion.div>
+             
+            <motion.h1
+              className="relative text-6xl md:text-8xl font-the-coastal-free font-bold text-white tracking-wider filter drop-shadow-lg"
+              initial="hidden"
+              animate="visible"
+              variants={textVariants}
+            >
+              Brew Haven
+            </motion.h1>
+
+            {/* Sub-text animation */}
+            <motion.p
+              className="mt-4 text-xl md:text-2xl font-thin text-white"
+              initial="hidden"
+              animate="visible"
+              variants={subTextVariants}
+            >
+              Where great coffee and great conversations flow freely.
+            </motion.p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export const CartContext = createContext();
 
@@ -46,7 +169,6 @@ export const menuItems = [
   { id: 11, name: 'Chocolate Croissant', price: 3.95, image: chocolateCroissant, description: 'Buttery, flaky pastry filled with premium dark chocolate.', origin: 'Various', category: 'Pastries', tags: ['Popular'] },
   { id: 12, name: 'Cinnamon Roll', price: 4.50, image: cinnamonRoll, description: 'Warm, gooey cinnamon roll with cream cheese frosting.', origin: 'Various', category: 'Pastries', tags: [] },
   { id: 13, name: 'Blueberry Muffin', price: 3.25, image: blueberryMuffin, description: 'Fresh baked muffin bursting with juicy blueberries.', origin: 'Various', category: 'Pastries', tags: [] },
-  // Adding a new coffee item to demonstrate the layout from the image
   { id: 14, name: 'Colombian Huila', price: 16.99, image: colombianHuila, description: 'Rich chocolate notes with caramel sweetness and nutty finish. Medium Roast.', origin: 'Colombia', category: 'Hot Coffee', tags: ['Popular'] },
 ];
 export const blogPosts = [
@@ -199,7 +321,7 @@ const Header = ({ onPageChange, cartCount, page }) => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="text-6xl font-extrabold text-black cursor-pointer font-the-coastal-free"
+              className="text-6xl font-light tracking-wide text-black cursor-pointer font-the-coastal-free"
             >
               Brew Haven
             </motion.h1>
@@ -243,7 +365,7 @@ const Header = ({ onPageChange, cartCount, page }) => {
           </motion.a>
         </nav>
         <div className="flex items-center space-x-4">
-          <AnimatedButton onClick={() => onPageChange('cart')} className="border-black 0 bg-gray-200 text-gray-800 relative">
+          <AnimatedButton onClick={() => onPageChange('cart')} className="className="bg-transparent hover:bg-gray-100 text-gray-800 relative>
             <ShoppingCart />
             <AnimatePresence>
               {cartCount > 0 && (
@@ -259,7 +381,7 @@ const Header = ({ onPageChange, cartCount, page }) => {
               )}
             </AnimatePresence>
           </AnimatedButton>
-          <AnimatedButton onClick={() => handleCheckout()} className="border-white bg-orange-500 text-white hover:bg-orange-700 rounded-md px-6 py-3 font-semibold">
+          <AnimatedButton onClick={() => handleCheckout()} className="border-2 border-white bg-[#222] text-white hover:bg-white hover:text-black hover:border-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
               Order now
           </AnimatedButton>
         </div>
@@ -269,12 +391,12 @@ const Header = ({ onPageChange, cartCount, page }) => {
 };
 
 const Footer = ({ onPageChange }) => (
-  <footer className="bg-[#783510] text-white p-8">
+  <footer className="bg-[#222] text-white p-8">
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
         <h4 className="text-2xl font-extrabold text-white mb-4">Brew Haven</h4>
         <p className="text-gray-200 max-w-sm mb-4">
-          Crafting exceptional coffee experiences since 2010. From farm to cup, we ensure every sip tells a story of quality, sustainability, and passion.
+          Crafting exceptional coffee experiences since 2025. From farm to cup, we ensure every sip tells a story of quality, sustainability, and passion.
         </p>
         <div className="flex space-x-4 mt-4">
           <a href="#" aria-label="Facebook" className="hover:text-orange-500 transition-colors text-gray-200">
@@ -284,7 +406,7 @@ const Footer = ({ onPageChange }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.162 4.045-2.815 7.425-6.17 7.425-1.196 0-2.316-.341-3.266-.945.166.02.336.023.509.023 1.006 0 1.93-.333 2.678-.916-1.002-.02-1.848-.67-2.132-1.571.145.037.295.056.452.056.216 0 .428-.029.626-.086-1.045-.221-1.845-1.144-1.845-2.282v-.026c.307.171.664.275 1.037.289-.628-.419-1.036-1.139-1.036-1.942 0-.429.114-.829.314-1.173 1.127 1.393 2.802 2.308 4.704 2.404-.031-.17-.046-.351-.046-.532 0-1.283 1.036-2.329 2.328-2.329.673 0 1.282.284 1.706.737.533-.105 1.036-.302 1.487-.562-.178.55-.552 1.01-1.049 1.298.473-.053.931-.183 1.353-.377-.321.498-.72.933-1.172 1.282z"/></svg>
           </a>
           <a href="#" aria-label="Instagram" className="hover:text-orange-500 transition-colors text-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-3.23 0-3.63.016-4.9.07C5.83.18 5.1.41 4.4.74A4.75 4.75 0 00.74 4.4C.41 5.1.18 5.83.07 7.1.016 8.37 0 8.77 0 12s.016 3.63.07 4.9c.11 1.27.34 2 .67 2.7.7.33 1.21.83 1.54 1.54.33.7.56 1.43.67 2.7.054 1.27.07 1.67.07 4.9s-.016 3.63-.07 4.9c-.11 1.27-.34 2-.67 2.7-.33.7-.83 1.21-1.54 1.54-.7.33-1.43.56-2.7.67C15.63.016 15.23 0 12 0zm0 2.1c3.19 0 3.58.01 4.83.06 1.1.05 1.76.24 2.27.47.51.23.86.58 1.1.86.27.27.5.58.7.9.2.33.37.7.47 1.1.23.51.42 1.17.47 2.27.05 1.25.06 1.64.06 4.83s-.01 3.58-.06 4.83c-.05 1.1-.24 1.76-.47 2.27-.23.51-.58.86-.86 1.1-.27.27-.58.5-.9.7-.33.2-.7.37-1.1.47-.51.23-1.17.42-2.27.47-1.25.05-1.64.06-4.83.06s-3.58-.01-4.83-.06c-1.1-.05-1.76-.24-2.27-.47-.51-.23-.86-.58-1.1-.86-.27-.27-.5-.58-.7-.9-.2-.33-.37-.7-.47-1.1-.23-.51-.42-1.17-.47-2.27-.05-1.25-.06-1.64-.06-4.83s.01-3.58.06-4.83c.05-1.1.24-1.76.47-2.27.23-.51.58-.86.86-1.1.27-.27.58-.5.9-.7.33-.2.7-.37 1.1-.47.51-.23 1.17-.42 2.27-.47C8.42 2.11 8.81 2.1 12 2.1zm0 2.2a7.7 7.7 0 100 15.4 7.7 7.7 0 000-15.4zm0 2.41a5.29 5.29 0 110 10.58 5.29 5.29 0 010-10.58zm0 2.21a3.08 3.08 0 100 6.16 3.08 3.08 0 000-6.16zM18.8 3.8a1.23 1.23 0 100 2.46 1.23 1.23 0 000-2.46z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-3.23 0-3.63.016-4.9.07C5.83.18 5.1.41 4.4.74A4.75 4.75 0 00.74 4.4C.41 5.1.18 5.83.07 7.1.016 8.37 0 8.77 0 12s.016 3.63.07 4.9c.11 1.27.34 2 .67 2.7.7.33 1.21.83 1.54 1.54.33.7.56 1.43.67 2.7.054 1.27.07 1.67.07 4.9s-.016 3.63-.07 4.9c-.11 1.27-.34 2-.67 2.7-.33.7-.83 1.21-1.54 1.54-.7.33-1.43.56-2.7.67C15.63.016 15.23 0 12 0zm0 2.1c3.19 0 3.58.01 4.83.06 1.1.05 1.76.24 2.27.47.51.23.86.58 1.1.86.27.27.5.58.7.9.2.33.37.7.47 1.1.23.51.42 1.17.47 2.27.05 1.25.06 1.64.06 4.83s-.01 3.58-.06 4.83c-.05 1.1-.24 1.76-.47 2.27-.23.51-.58.86-.86 1.1-.27.27-.58.5-.9.7-.33.2-.7.37-1.1.47-.51.23-1.17-.42-2.27-.47-1.25-.05-1.64-.06-4.83-.06s-3.58-.01-4.83-.06c-1.1-.05-1.76-.24-2.27-.47-.23-.51-.58-.86-1.1-.86-.27-.27-.58-.5-.9-.7-.33-.2-.7-.37-1.1-.47-.51-.23-1.17-.42-2.27-.47-1.25-.05-1.64-.06-4.83-.06s-3.58.01-4.83.06c.05 1.1.24 1.76.47 2.27.23.51.58.86.86 1.1.27.27.58.5.9.7.33.2.7.37 1.1.47.51.23 1.17.42 2.27.47C8.42 2.11 8.81 2.1 12 2.1zm0 2.2a7.7 7.7 0 100 15.4 7.7 7.7 0 000-15.4zm0 2.41a5.29 5.29 0 110 10.58 5.29 5.29 0 010-10.58zm0 2.21a3.08 3.08 0 100 6.16 3.08 3.08 0 000-6.16zM18.8 3.8a1.23 1.23 0 100 2.46 1.23 1.23 0 000-2.46z"/></svg>
           </a>
           <a href="#" aria-label="LinkedIn" className="hover:text-orange-500 transition-colors text-gray-200">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.615 0-1.1.424-1.1.954 0 .53.486.954 1.1.954.617 0 1.1-.424 1.1-.954s-.485-.954-1.1-.954zm7 6.891h-2v-3.493c0-.817-.014-1.844-1.124-1.844-1.125 0-1.294.877-1.294 1.787v3.55h-2v-6h1.929v.891h.028c.27-.518.934-1.066 1.895-1.066 2.023 0 2.395 1.332 2.395 3.062v3.113z"/></svg>
@@ -323,7 +445,7 @@ const Footer = ({ onPageChange }) => (
       </div>
     </div>
     <div className="border-t border-white-100 mt-8 pt-6 text-center text-sm flex flex-col md:flex-row justify-between items-center text-gray-200">
-      <span>© 2024 Brew Haven. All rights reserved.</span>
+      <span>© 2025 Brew Haven. All rights reserved.</span>
       <div className="mt-2 md:mt-0 space-x-4">
         <a href="#" className="hover:text-orange-500 transition-colors text-gray-200">Privacy Policy</a>
         <a href="#" className="hover:text-orange-500 transition-colors text-gray-200">Terms of Service</a>
@@ -500,8 +622,10 @@ const App = () => {
   const [page, setPage] = useState('home');
   const [articleId, setArticleId] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAppLoaded, setIsAppLoaded] = useState(false);
   const cartContext = useContext(CartContext);
   const cartCount = cartContext.cart.reduce((acc, item) => acc + item.quantity, 0);
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -509,6 +633,10 @@ const App = () => {
   const onToggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
+  const onPreloaderComplete = () => {
+    setIsAppLoaded(true);
+  };
+
   const pageComponent = () => {
     switch (page) {
       case 'home':
@@ -531,32 +659,48 @@ const App = () => {
         return <HomePage onPageChange={handlePageChange} />;
     }
   };
+
   return (
     <div className="bg-white min-h-screen font-sans antialiased text-gray-800">
-      <Header onPageChange={handlePageChange} cartCount={cartCount} page={page} />
-      <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>
-        <AnimatePresence mode="wait">
+      {/* The preloader is rendered first, and its state controls the rest of the app */}
+      <Preloader onAnimationComplete={onPreloaderComplete} />
+
+      {/* The main app content is only rendered once the preloader is finished */}
+      <AnimatePresence>
+        {isAppLoaded && (
           <motion.div
-            key={page}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="pt-20"
+            transition={{ duration: 0.5 }}
           >
-            {pageComponent()}
+            <Header onPageChange={handlePageChange} cartCount={cartCount} page={page} />
+            <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={page}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="pt-20"
+                >
+                  {pageComponent()}
+                </motion.div>
+              </AnimatePresence>
+            </Suspense>
+            <Footer onPageChange={handlePageChange} />
+            <CartModal
+              isOpen={isCartOpen}
+              onClose={onToggleCart}
+              cart={cartContext.cart}
+              updateQuantity={cartContext.updateQuantity}
+              removeItem={cartContext.removeItem}
+              checkout={cartContext.checkout}
+            />
           </motion.div>
-        </AnimatePresence>
-      </Suspense>
-      <Footer onPageChange={handlePageChange} />
-      <CartModal
-        isOpen={isCartOpen}
-        onClose={onToggleCart}
-        cart={cartContext.cart}
-        updateQuantity={cartContext.updateQuantity}
-        removeItem={cartContext.removeItem}
-        checkout={cartContext.checkout}
-      />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

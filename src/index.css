@@ -32,7 +32,7 @@ body {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #C1410B; /* Brew Haven orange */
+  background-color: #222; /* Updated to #222 */
   visibility: hidden;
   transition: all 0.3s ease-in-out;
 }
@@ -45,4 +45,9 @@ body {
 .nav-link.active::before {
   visibility: visible;
   width: 100%;
+}
+
+.thin-logo {
+  font-weight: 300; /* light */
+  -webkit-text-stroke: 0.2px #000; /* optional outline for clarity */
 }

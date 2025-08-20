@@ -24,7 +24,9 @@ const MenuPage = ({ onPageChange }) => {
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setFilter(category)}
                         className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 text-sm ${
-                            filter === category ? 'bg-orange-600 text-white shadow-md' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                            filter === category 
+                                ? 'bg-black text-white border-2 border-white' // Active/Clicked state
+                                : 'bg-white text-black border-2 border-black hover:bg-black hover:text-white' // Default and hover state
                         }`}
                     >
                         {category}
@@ -50,13 +52,13 @@ const MenuPage = ({ onPageChange }) => {
                 </AnimatePresence>
             </div>
         </AnimatedSection>
-        <AnimatedSection className="bg-[#783510] text-white py-16 px-4 text-center mt-12">
+        <section className="bg-[#222] text-white py-16 px-4 text-center mt-12">
             <h2 className="text-4xl font-extrabold mb-2">Can't Find What You're Looking For?</h2>
             <p className="text-lg text-white mb-8">Our skilled baristas can create custom drinks tailored to your taste preferences</p>
-            <AnimatedButton onClick={() => onPageChange('contact')} className="bg-white text-amber-800 hover:bg-gray-200 rounded-lg">
+            <AnimatedButton onClick={() => onPageChange('contact')} className="bg-white text-black hover:bg-gray-200 rounded-lg">
                 Ask Our Baristas
             </AnimatedButton>
-        </AnimatedSection>
+        </section>
     </main>
   );
 };

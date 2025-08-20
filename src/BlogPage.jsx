@@ -95,18 +95,18 @@ const BlogPage = ({ onPageChange, setArticleId }) => {
           </div>
         </AnimatedSection>
       </div>
-      <AnimatedSection className="bg-[#783510] text-white py-16 px-4 text-center">
+      <section className="bg-[#222] text-white py-16 px-4 text-center">
           <div className="container mx-auto">
               <h2 className="text-4xl font-extrabold mb-2">Stay Updated with Coffee Insights</h2>
               <p className="text-lg text-white mb-8">Subscribe to our newsletter for the latest brewing tips, origin stories, and coffee news</p>
               <form className="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-lg mx-auto" onSubmit={(e) => { e.preventDefault(); handleSubscribe(); }}>
-                  <input type="email" placeholder="Enter your email" className="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"/>
-                  <AnimatedButton type="submit" className="bg-orange-700 text-white hover:bg-white-200 w-full sm:w-auto rounded-lg">
+                  <input type="email" placeholder="Enter your email" className="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white border-2 border-black"/>
+                  <AnimatedButton type="submit" className="w-full sm:w-auto rounded-lg bg-orange-500 text-white border-2 border-black hover:bg-orange-300 hover:text-black px-5 py-3 font-semibold transition-colors duration-300">
                       Subscribe
                   </AnimatedButton>
               </form>
           </div>
-      </AnimatedSection>
+      </section>
     </main>
   );
 };

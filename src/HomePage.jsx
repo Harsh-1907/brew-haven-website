@@ -60,7 +60,7 @@ const HomePage = ({ onPageChange }) => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                <AnimatedButton onClick={() => onPageChange('menu')} className="border-white bg-orange-500 text-white hover:bg-orange-700 rounded-md px-6 py-3 font-semibold">
+                <AnimatedButton onClick={() => onPageChange('menu')} className="border-2 border-white bg-white text-black hover:bg-transparent hover:text-white rounded-md px-6 py-3 font-semibold transition-colors duration-300">
                     Explore Our Menu
                 </AnimatedButton>
                 </motion.div>
@@ -69,7 +69,7 @@ const HomePage = ({ onPageChange }) => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 >
-                <AnimatedButton onClick={() => onPageChange('checkout')} className="bg-white text-black hover:bg-orange-200 rounded-md px-6 py-3 font-semibold">
+                <AnimatedButton onClick={() => onPageChange('checkout')} className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
                     Order Online
                 </AnimatedButton>
                 </motion.div>
@@ -120,7 +120,7 @@ const HomePage = ({ onPageChange }) => {
             ))}
           </div>
         </AnimatedSection>
-        <AnimatedSection className="bg-amber-800 text-white py-16 px-4">
+        <AnimatedSection className="bg-[#222] text-white py-16 px-4">
           <div className="container mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -250,18 +250,18 @@ const HomePage = ({ onPageChange }) => {
             </div>
           </div>
         </AnimatedSection>
-        <AnimatedSection className="py-16 px-4 text-center text-white" style={{ backgroundColor: '#783510' }}>
+        <section className="py-16 px-4 text-center text-white" style={{ backgroundColor: '#222' }}>
           <h2 className="text-4xl font-extrabold mb-2">Ready to Experience Exceptional Coffee?</h2>
           <p className="text-lg text-white mb-8">Join thousands of coffee enthusiasts who have made Brew Haven their daily ritual</p>
           <div className="flex justify-center space-x-4">
-              <AnimatedButton onClick={() => onPageChange('checkout')} className="bg-white text-orange-600 hover:bg-orange-200 rounded-md px-6 py-3 font-semibold">
-                  Order Now
+              <AnimatedButton onClick={() => handleCheckout()} className="border-2 border-white bg-[#222] text-white hover:bg-white hover:text-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
+                  Order now
               </AnimatedButton>
-              <AnimatedButton onClick={() => onPageChange('menu')} className="bg-white text-orange-600 hover:bg-orange-200 rounded-md px-6 py-3 font-semibold">
+              <AnimatedButton onClick={() => onPageChange('menu')} className="bg-white text-black border-2 border-transparent hover:bg-transparent hover:text-white hover:border-white rounded-md px-6 py-3 font-semibold transition-colors duration-300">
                   Visit Our Shop
               </AnimatedButton>
           </div>
-      </AnimatedSection>
+      </section>
       </main>
     </>
   );

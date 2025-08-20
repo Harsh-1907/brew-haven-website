@@ -51,7 +51,7 @@ export const CoffeeCard = ({ item }) => {
       <h3 className="text-2xl font-bold text-gray-900 mb-1">{item.name}</h3>
       <p className="text-gray-600 mb-2 flex-grow">{item.description}</p>
       <div className="flex justify-between items-center w-full mt-auto">
-        <span className="text-3xl font-extrabold text-orange-600">${item.price.toFixed(2)}</span>
+        <span className="text-3xl font-extrabold text-black">${item.price.toFixed(2)}</span>
         <AnimatePresence mode="wait">
           {cartItem ? (
             <motion.div
@@ -73,7 +73,7 @@ export const CoffeeCard = ({ item }) => {
             <AnimatedButton
               key="add-button"
               onClick={() => addToCart(item)}
-              className="bg-orange-600 text-white hover:bg-orange-700 text-base"
+              className="bg-white text-black border-2 border-black hover:bg-black hover:text-white rounded-md text-base px-4 py-2 font-semibold transition-colors duration-300"
             >
               + Add
             </AnimatedButton>
@@ -152,7 +152,7 @@ export const FeaturedCoffeeCard = ({ item }) => {
           )}
           <h3 className="text-3xl font-bold text-gray-900 mt-2">{item.name}</h3>
           <p className="text-gray-600 mb-4">{item.description.split('.')[0]}</p>
-          <p className="text-3xl font-extrabold text-orange-600">${item.price.toFixed(2)}</p>
+          <p className="text-3xl font-extrabold text-black">${item.price.toFixed(2)}</p>
           <div className="flex items-center text-sm text-gray-500 mt-2">
             <MapPin className="w-4 h-4 mr-1 text-gray-400" />
             <span>Origin: {item.origin}</span>
@@ -179,7 +179,7 @@ export const FeaturedCoffeeCard = ({ item }) => {
             <AnimatedButton
               key="add-button"
               onClick={() => addToCart(item)}
-              className="mt-6 w-full border-black bg-orange-300 text-white-900 hover:bg-orange-700 flex items-center justify-center rounded-md"
+              className="mt-6 w-full border-2 border-black bg-white text-black hover:bg-black hover:text-white rounded-md px-6 py-3 font-semibold transition-colors duration-300 flex items-center justify-center"
             >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
