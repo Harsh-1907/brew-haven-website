@@ -306,12 +306,7 @@ export const blogPosts = [
   },
 ];
 
-const Header = ({ onPageChange, cartCount, page }) => {
-  const { clearCart } = useContext(CartContext);
-  const handleCheckout = () => {
-    onPageChange('checkout');
-    clearCart();
-  };
+const Header = ({ onPageChange, cartCount, onToggleCart, page }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-md shadow-md p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -365,7 +360,7 @@ const Header = ({ onPageChange, cartCount, page }) => {
           </motion.a>
         </nav>
         <div className="flex items-center space-x-4">
-          <AnimatedButton onClick={() => onPageChange('cart')} className="className="bg-transparent hover:bg-gray-100 text-gray-800 relative>
+          <AnimatedButton onClick={onToggleCart} className="bg-transparent hover:bg-gray-100 text-gray-800 relative">
             <ShoppingCart />
             <AnimatePresence>
               {cartCount > 0 && (
@@ -381,7 +376,7 @@ const Header = ({ onPageChange, cartCount, page }) => {
               )}
             </AnimatePresence>
           </AnimatedButton>
-          <AnimatedButton onClick={() => handleCheckout()} className="border-2 border-white bg-[#222] text-white hover:bg-white hover:text-black hover:border-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
+          <AnimatedButton onClick={() => onPageChange('checkout')} className="border-2 border-white bg-[#222] text-white hover:bg-white hover:text-black hover:border-black rounded-md px-6 py-3 font-semibold transition-colors duration-300">
               Order now
           </AnimatedButton>
         </div>
@@ -454,7 +449,8 @@ const Footer = ({ onPageChange }) => (
   </footer>
 );
 
-const CartModal = ({ isOpen, onClose, cart, updateQuantity, removeItem, checkout }) => {
+const CartModal = ({ isOpen, onClose }) => {
+  const { cart, updateQuantity, removeItem, checkout } = useContext(CartContext);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = totalPrice * 0.08;
@@ -462,6 +458,7 @@ const CartModal = ({ isOpen, onClose, cart, updateQuantity, removeItem, checkout
   const handleCheckout = (e) => {
     e.preventDefault();
     checkout();
+    onClose();
   };
   if (!isOpen) return null;
   return createPortal(
@@ -568,6 +565,7 @@ const CartModal = ({ isOpen, onClose, cart, updateQuantity, removeItem, checkout
     document.body
   );
 };
+
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const addToCart = (item) => {
@@ -609,6 +607,7 @@ const CartProvider = ({ children }) => {
   );
 };
 
+// Lazy loading all pages
 const HomePage = lazy(() => import('./HomePage.jsx'));
 const MenuPage = lazy(() => import('./MenuPage.jsx'));
 const BlogPage = lazy(() => import('./BlogPage.jsx'));
@@ -618,23 +617,34 @@ const ContactPage = lazy(() => import('./ContactPage.jsx'));
 const CartPage = lazy(() => import('./CartPage.jsx'));
 const CheckoutPage = lazy(() => import('./CheckoutPage.jsx'));
 
+// The main App component is now inside the CartProvider
 const App = () => {
   const [page, setPage] = useState('home');
   const [articleId, setArticleId] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isAppLoaded, setIsAppLoaded] = useState(false);
-  const cartContext = useContext(CartContext);
-  const cartCount = cartContext.cart.reduce((acc, item) => acc + item.quantity, 0);
+  const [isAppLoaded, setIsAppLoaded] = useState(true);
+  const { cart, clearCart } = useContext(CartContext);
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
+    if (newPage === 'cart') {
+      setIsCartOpen(true);
+    } else if (newPage === 'checkout') {
+      // The `checkout` logic is now handled in the CartModal.
+      setIsCartOpen(true);
+    } else {
+      setIsCartOpen(false);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const onToggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
+
   const onPreloaderComplete = () => {
     setIsAppLoaded(true);
+  };
+  
+  const onToggleCart = () => {
+    setIsCartOpen(!isCartOpen);
   };
 
   const pageComponent = () => {
@@ -652,9 +662,11 @@ const App = () => {
       case 'contact':
         return <ContactPage onPageChange={handlePageChange} />;
       case 'cart':
-        return <CartPage onPageChange={handlePageChange} />;
+        // CartPage will not be rendered if the modal is used
+        return null;
       case 'checkout':
-        return <CheckoutPage onPageChange={handlePageChange} />;
+        // CheckoutPage will not be rendered if the modal is used
+        return null;
       default:
         return <HomePage onPageChange={handlePageChange} />;
     }
@@ -663,7 +675,7 @@ const App = () => {
   return (
     <div className="bg-white min-h-screen font-sans antialiased text-gray-800">
       {/* The preloader is rendered first, and its state controls the rest of the app */}
-      <Preloader onAnimationComplete={onPreloaderComplete} />
+      {/* <Preloader onAnimationComplete={onPreloaderComplete} /> */}
 
       {/* The main app content is only rendered once the preloader is finished */}
       <AnimatePresence>
@@ -674,7 +686,7 @@ const App = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Header onPageChange={handlePageChange} cartCount={cartCount} page={page} />
+            <Header onPageChange={handlePageChange} cartCount={cartCount} onToggleCart={onToggleCart} page={page} />
             <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -693,10 +705,6 @@ const App = () => {
             <CartModal
               isOpen={isCartOpen}
               onClose={onToggleCart}
-              cart={cartContext.cart}
-              updateQuantity={cartContext.updateQuantity}
-              removeItem={cartContext.removeItem}
-              checkout={cartContext.checkout}
             />
           </motion.div>
         )}
@@ -704,9 +712,11 @@ const App = () => {
     </div>
   );
 };
+
 const Root = () => (
   <CartProvider>
     <App />
   </CartProvider>
 );
+
 export default Root;
