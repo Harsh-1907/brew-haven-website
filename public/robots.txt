@@ -1,0 +1,6 @@
+# Allow all crawlers access to the entire site
+User-agent: *
+Allow: /
+
+# Link to your XML sitemap
+Sitemap: https://brew-haven-website.vercel.app/sitemap.xml
