@@ -360,8 +360,7 @@ const Header = ({ onPageChange, cartCount, onToggleCart, page }) => {
           </motion.a>
         </nav>
         <div className="flex items-center space-x-4">
-          <AnimatedButton onClick={onToggleCart} className="bg-transparent hover:bg-gray-100 text-gray-800 relative">
-            <ShoppingCart />
+        <AnimatedButton onClick={onToggleCart} className="bg-transparent hover:bg-gray-100 text-gray-800 relative">            <ShoppingCart />
             <AnimatePresence>
               {cartCount > 0 && (
                 <motion.span
